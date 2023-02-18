@@ -4,7 +4,7 @@ const formUpload = require('../middleware/formUpload')
 // const validation = require('../middleware/validation')
 
 // import controller
-const moviesController = require('../controller/movies_controller')
+const moviesController = require('../controller/movies_controller.js')
 
 router.get('/', moviesController.read)
 router.get('/:id', moviesController.readDetail)
