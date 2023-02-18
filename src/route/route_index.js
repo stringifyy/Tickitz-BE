@@ -5,6 +5,7 @@ const router = express();
 const authRoute = require("./route_auth");
 const moviesRoute = require("./route_movies");
 const cinemaRoute = require("./route_cinema");
+const historyRoute = require("./route_history.js");
 // end
 
 router.get("/", (req, res) => {
@@ -15,6 +16,7 @@ router.get("/", (req, res) => {
 router.use("/auth", authRoute);
 router.use("/movies", moviesRoute);
 router.use("/cinema", cinemaRoute);
+router.use("/history", historyRoute);
 //end
 
 module.exports = router;
