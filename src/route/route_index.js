@@ -3,6 +3,7 @@ const router = express();
 
 //import route mvp
 const authRoute = require("../route/route_auth");
+const moviesRoute = require("../route/route_movies");
 // end
 
 router.get("/", (req, res) => {
@@ -11,7 +12,7 @@ router.get("/", (req, res) => {
 
 // route.use("/apa", panggil inisial importnya)
 router.use("/auth", authRoute);
-// router.use("/Profile", historyRoute);
+router.use("/movies", moviesRoute);
 //end
 
 module.exports = router;
