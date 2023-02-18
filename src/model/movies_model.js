@@ -31,7 +31,7 @@ const moviesModel = {
 
     // READ
     query: (search, movies_release, sortBy, limit, offset) => {
-        let orderQuery = `ORDER BY movies_release ${sortBy} LIMIT ${limit} OFFSET ${offset}`
+        let orderQuery = `ORDER BY date ${sortBy} LIMIT ${limit} OFFSET ${offset}`
 
         if (!search && !movies_release) {
             return orderQuery
@@ -44,12 +44,36 @@ const moviesModel = {
         }
     },
 
-    read: function (search, movies_release, sortBy = 'ASC', limit = 25, offset = 0) {
+    whereClause: (search, movies_release) => {
+        // console.log("whereclause", { search, movies_release })
+        if (search && movies_release) {
+            return `WHERE movies_name ILIKE '%${search}%' AND movies_release ILIKE '${movies_release}%'`
+        } else if (search || movies_release) {
+            // console.log("OKOKOK")
+            return `WHERE movies_name ILIKE '%${search}%' OR movies_release ILIKE '${movies_release}%'`
+        } else {
+            return ""
+        }
+    },
+
+    orderAndGroupClause: (sortBy, limit, offset) => {
+        return `GROUP BY p.id ORDER BY date ${sortBy} LIMIT ${limit} OFFSET ${offset}`
+    },
+
+    read: function (search, movies_release, sortBy = 'DESC', limit = 25, offset = 0) {
+        // console.log("where", this.whereClause(search, category))
+        // console.log("order", this.orderAndGroupClause(sortBy, limit, offset))
         return new Promise((resolve, reject) => {
             db.query(
-                `SELECT * from movies ${this.query(search, movies_release, sortBy, limit, offset)}`,
+                `SELECT 
+                p.id, p.movies_name, p.movies_genre, p.movies_release, p.duration, p.movies_directed, p.movies_cast, p.movies_synopsis, p.movies_image, p.date,
+                json_agg(row_to_json(pi)) cinema 
+                FROM movies p
+                INNER JOIN cinema pi ON p.id = pi.id_movies 
+                ${this.whereClause(search, movies_release)}
+                ${this.orderAndGroupClause(sortBy, limit, offset)}
+                `,
                 (err, result) => {
-                    // console.log(result);
                     if (err) {
                         return reject(err.message)
                     } else {
@@ -63,7 +87,14 @@ const moviesModel = {
     readDetail: (id) => {
         return new Promise((resolve, reject) => {
             db.query(
-                `SELECT * from movies WHERE id='${id}'`,
+                `SELECT 
+                p.id, p.movies_name, p.movies_genre, p.movies_release, p.duration, p.movies_directed, p.movies_cast, p.movies_synopsis, p.movies_image,
+                json_agg(row_to_json(pi)) cinema 
+                FROM movies p
+                INNER JOIN cinema pi ON p.id = pi.id_movies 
+                AND p.id='${id}'
+                GROUP BY p.id`,
+                // `SELECT * from movies WHERE id='${id}'`,
                 (err, result) => {
                     if (err) {
                         return reject(err.message)
