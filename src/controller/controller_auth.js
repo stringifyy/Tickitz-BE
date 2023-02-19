@@ -40,6 +40,7 @@ const authController = {
           ...req.body,
           password: hash,
         };
+        console.log(request);
         return authModel
           .register(request)
           .then((result) => {
