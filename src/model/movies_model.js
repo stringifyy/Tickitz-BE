@@ -4,10 +4,10 @@ const { v4: uuidv4 } = require('uuid');
 
 const moviesModel = {
     // CREATE
-    create: ({ movies_name, movies_genre, movies_release, duration, movies_directed, movies_cast, movies_synopsis, movies_image }) => {
+    create: ({ movies_name, movies_genre, movies_release, duration, movies_directed, movies_cast, movies_synopsis, movies_image, date }) => {
         return new Promise((resolve, reject) => {
             db.query(
-                `INSERT INTO movies (id, movies_name, movies_genre, movies_release, duration, movies_directed, movies_cast, movies_synopsis, movies_image) 
+                `INSERT INTO movies (id, movies_name, movies_genre, movies_release, duration, movies_directed, movies_cast, movies_synopsis, movies_image, date) 
                 VALUES (
                     '${uuidv4()}',
                     '${movies_name}',
@@ -17,19 +17,75 @@ const moviesModel = {
                     '${movies_directed}',
                     '${movies_cast}',
                     '${movies_synopsis}',
-                    '${movies_image}')`,
+                    '${movies_image}',
+                    '${date}')`,
                 (err, result) => {
                     if (err) {
                         return reject(err.message)
                     } else {
-                        return resolve({ movies_name, movies_genre, movies_release, duration, movies_directed, movies_cast, movies_synopsis, movies_image })
+                        return resolve({ movies_name, movies_genre, movies_release, duration, movies_directed, movies_cast, movies_synopsis, movies_image, date })
                     }
                 }
             )
         })
     },
 
-    // READ
+    // READ (MOVIES WITH CINEMA)
+    // query: (search, movies_release, sortBy, limit, offset) => {
+    //     let orderQuery = `ORDER BY date ${sortBy} LIMIT ${limit} OFFSET ${offset}`
+
+    //     if (!search && !movies_release) {
+    //         return orderQuery
+    //     } else if (search && movies_release) {
+    //         return `WHERE movies_name ILIKE '%${search}%' AND movies_release ILIKE '${movies_release}%' ${orderQuery}`
+    //     } else if (search || movies_release) {
+    //         return `WHERE movies_name ILIKE '%${search}%' OR movies_release ILIKE '${movies_release}%' ${orderQuery}`
+    //     } else {
+    //         return orderQuery
+    //     }
+    // },
+
+    // whereClause: (search, movies_release) => {
+    //     // console.log("whereclause", { search, movies_release })
+    //     if (search && movies_release) {
+    //         return `WHERE movies_name ILIKE '%${search}%' AND movies_release ILIKE '${movies_release}%'`
+    //     } else if (search || movies_release) {
+    //         // console.log("OKOKOK")
+    //         return `WHERE movies_name ILIKE '%${search}%' OR movies_release ILIKE '${movies_release}%'`
+    //     } else {
+    //         return ""
+    //     }
+    // },
+
+    // orderAndGroupClause: (sortBy, limit, offset) => {
+    //     return `GROUP BY p.id ORDER BY date ${sortBy} LIMIT ${limit} OFFSET ${offset}`
+    // },
+
+    // read: function (search, movies_release, sortBy = 'DESC', limit = 25, offset = 0) {
+    //     // console.log("where", this.whereClause(search, category))
+    //     // console.log("order", this.orderAndGroupClause(sortBy, limit, offset))
+    //     return new Promise((resolve, reject) => {
+    //         db.query(
+    //             `SELECT 
+    //             p.id, p.movies_name, p.movies_genre, p.movies_release, p.duration, p.movies_directed, p.movies_cast, p.movies_synopsis, p.movies_image, p.date,
+    //             json_agg(row_to_json(pi)) cinema 
+    //             FROM movies p
+    //             INNER JOIN cinema pi ON p.id = pi.id_movies 
+    //             ${this.whereClause(search, movies_release)}
+    //             ${this.orderAndGroupClause(sortBy, limit, offset)}
+    //             `,
+    //             (err, result) => {
+    //                 if (err) {
+    //                     return reject(err.message)
+    //                 } else {
+    //                     return resolve(result.rows)
+    //                 }
+    //             }
+    //         )
+    //     })
+    // },
+
+    // READ (MOVIES ONLY)
     query: (search, movies_release, sortBy, limit, offset) => {
         let orderQuery = `ORDER BY date ${sortBy} LIMIT ${limit} OFFSET ${offset}`
 
@@ -44,36 +100,12 @@ const moviesModel = {
         }
     },
 
-    whereClause: (search, movies_release) => {
-        // console.log("whereclause", { search, movies_release })
-        if (search && movies_release) {
-            return `WHERE movies_name ILIKE '%${search}%' AND movies_release ILIKE '${movies_release}%'`
-        } else if (search || movies_release) {
-            // console.log("OKOKOK")
-            return `WHERE movies_name ILIKE '%${search}%' OR movies_release ILIKE '${movies_release}%'`
-        } else {
-            return ""
-        }
-    },
-
-    orderAndGroupClause: (sortBy, limit, offset) => {
-        return `GROUP BY p.id ORDER BY date ${sortBy} LIMIT ${limit} OFFSET ${offset}`
-    },
-
     read: function (search, movies_release, sortBy = 'DESC', limit = 25, offset = 0) {
-        // console.log("where", this.whereClause(search, category))
-        // console.log("order", this.orderAndGroupClause(sortBy, limit, offset))
         return new Promise((resolve, reject) => {
             db.query(
-                `SELECT 
-                p.id, p.movies_name, p.movies_genre, p.movies_release, p.duration, p.movies_directed, p.movies_cast, p.movies_synopsis, p.movies_image, p.date,
-                json_agg(row_to_json(pi)) cinema 
-                FROM movies p
-                INNER JOIN cinema pi ON p.id = pi.id_movies 
-                ${this.whereClause(search, movies_release)}
-                ${this.orderAndGroupClause(sortBy, limit, offset)}
-                `,
+                `SELECT * from movies ${this.query(search, movies_release, sortBy, limit, offset)}`,
                 (err, result) => {
+                    // console.log(result);
                     if (err) {
                         return reject(err.message)
                     } else {
