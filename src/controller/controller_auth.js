@@ -75,19 +75,41 @@ const authController = {
       });
   },
 
+  // update: (req, res) => {
+  //   const request = {
+  //     ...req.body,
+  //     id: req.params.id,
+  //   };
+  //   return authModel
+  //     .update(request)
+  //     .then((result) => {
+  //       return res.status(201).send({ message: `Successfully update data!`, data: result });
+  //     })
+  //     .catch((error) => {
+  //       return res.status(500).send({ message: error });
+  //     });
+  // },
+
   update: (req, res) => {
-    const request = {
-      ...req.body,
-      id: req.params.id,
-    };
-    return authModel
-      .update(request)
+    const id = req.params.id
+
+    return authModel.update(req, id)
       .then((result) => {
-        return res.status(201).send({ message: "succes", data: result });
+        // console.log(result[0]);
+        // for (let i = 0; i < result.length; i++) {
+        //     unlink(`public/uploads/images/${result[i].img_profile}`, (err) => {
+        //         if (err) throw err;
+        //     });
+        // }
+        return res.status(200).send({ message: `Successfully update data id=${id}` })
       })
-      .catch((error) => {
-        return res.status(500).send({ message: error });
-      });
+      // Error handling
+      .catch(error => {
+        return res.status(400).send({
+          Status: 400,
+          Message: `${error}`
+        })
+      })
   },
 
   remove: (req, res) => {
