@@ -1,11 +1,12 @@
 const express = require("express");
 const router = express();
 const formUpload = require('../middleware/formUpload')
+const validation = require('../middleware/validation')
 
 const authController = require("../controller/controller_auth");
 
 router.post("/login", authController.login);
-router.post("/register", authController.register);
+router.post("/register", validation.users, authController.register);
 
 router.get("/users", authController.get);
 router.get("/users/:id", authController.getDetail);
