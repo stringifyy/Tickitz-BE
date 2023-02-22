@@ -34,7 +34,7 @@ const seatsModel = {
         }
     },
 
-    read: function (search, status, sortBy = 'ASC', limit = 25, offset = 0) {
+    read: function (search, status, sortBy = 'ASC', limit = 50, offset = 0) {
         return new Promise((resolve, reject) => {
             db.query(
                 `SELECT * from seats_left ${this.query(search, status, sortBy, limit, offset)}`,

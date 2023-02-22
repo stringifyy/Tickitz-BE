@@ -54,13 +54,22 @@ const authModel = {
 
   getDetail: (id) => {
     return new Promise((resolve, reject) => {
-      db.query(`SELECT * from users WHERE id='${id}'`, (err, result) => {
-        if (err) {
-          return reject(err.message);
-        } else {
-          return resolve(result.rows[0]);
-        }
-      });
+      db.query(
+        `SELECT 
+                p.id, p.name, p.email, p.phone, p.profile_image, p.role,
+                json_agg(row_to_json(pi)) history 
+                FROM users p
+                INNER JOIN history pi ON p.id = pi.id_user
+                AND p.id='${id}'
+                GROUP BY p.id`,
+        // `SELECT * from users WHERE id='${id}'`, 
+        (err, result) => {
+          if (err) {
+            return reject(err.message);
+          } else {
+            return resolve(result.rows[0]);
+          }
+        });
     });
   },
 
