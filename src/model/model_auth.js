@@ -54,13 +54,22 @@ const authModel = {
 
   getDetail: (id) => {
     return new Promise((resolve, reject) => {
-      db.query(`SELECT * from users WHERE id='${id}'`, (err, result) => {
-        if (err) {
-          return reject(err.message);
-        } else {
-          return resolve(result.rows[0]);
-        }
-      });
+      db.query(
+        `SELECT 
+                p.id, p.name, p.email, p.phone, p.profile_image, p.role,
+                json_agg(row_to_json(pi)) history 
+                FROM users p
+                INNER JOIN history pi ON p.id = pi.id_user
+                AND p.id='${id}'
+                GROUP BY p.id`,
+        // `SELECT * from users WHERE id='${id}'`, 
+        (err, result) => {
+          if (err) {
+            return reject(err.message);
+          } else {
+            return resolve(result.rows[0]);
+          }
+        });
     });
   },
 
@@ -98,7 +107,7 @@ const authModel = {
 
   update: function (req, id) {
     return new Promise((success, failed) => {
-      const { name, email, phone, profile_image } = req.body
+      const { name, email, phone, profile_image, role } = req.body
       db.query(`SELECT * FROM users WHERE id='${id}'`, (error, result) => {
         if (error) {
           return failed(error.message)
@@ -112,7 +121,8 @@ const authModel = {
                         name='${name || result.rows[0].name}',
                         email='${email || result.rows[0].email}',
                         phone='${phone || result.rows[0].phone}',
-                        profile_image='${(req.file != undefined) ? req.file.filename : result.rows[0].profile_image}'
+                        profile_image='${(req.file != undefined) ? req.file.filename : result.rows[0].profile_image}',
+                        role='${role || result.rows[0].role}'
                         WHERE id='${id}'`, (error) => {
               if (error) {
                 return failed(error.message)

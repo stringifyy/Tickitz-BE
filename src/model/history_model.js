@@ -53,14 +53,14 @@ const historyModel = {
     readDetail: (id) => {
         return new Promise((resolve, reject) => {
             db.query(
-                `SELECT 
-                p.id, p.name, p.email,
-                json_agg(row_to_json(pi)) history 
-                FROM users p
-                INNER JOIN history pi ON p.id = pi.id_user
-                AND p.id='${id}'
-                GROUP BY p.id`,
-                // `SELECT * from history WHERE id_user='${id}'`,
+                // `SELECT 
+                // p.id, p.name, p.email,
+                // json_agg(row_to_json(pi)) history 
+                // FROM users p
+                // INNER JOIN history pi ON p.id = pi.id_user
+                // AND p.id='${id}'
+                // GROUP BY p.id`,
+                `SELECT * from history WHERE id='${id}'`,
                 (err, result) => {
                     if (err) {
                         return reject(err.message)

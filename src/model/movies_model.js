@@ -23,6 +23,7 @@ const moviesModel = {
                     if (err) {
                         return reject(err.message)
                     } else {
+                        // console.log('returning', result.rows);
                         return resolve({ movies_name, movies_genre, movies_release, duration, movies_directed, movies_cast, movies_synopsis, movies_image, date })
                     }
                 }
@@ -120,7 +121,7 @@ const moviesModel = {
         return new Promise((resolve, reject) => {
             db.query(
                 `SELECT 
-                p.id, p.movies_name, p.movies_genre, p.movies_release, p.duration, p.movies_directed, p.movies_cast, p.movies_synopsis, p.movies_image,
+                p.id, p.movies_name, p.movies_genre, p.movies_release, p.duration, p.movies_directed, p.movies_cast, p.movies_synopsis, p.movies_image, p.date,
                 json_agg(row_to_json(pi)) cinema 
                 FROM movies p
                 INNER JOIN cinema pi ON p.id = pi.id_movies 
