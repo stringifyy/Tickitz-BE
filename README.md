@@ -18,34 +18,39 @@ Open [schema](https://drawsql.app/teams/array/diagrams/copy-of-auth-db)
 
 ## Folder Structure
 
-     ┣ 📂public
-     ┃ ┗ 📂uploads
-     ┃ ┃ ┗ 📂images
      ┣ 📂src
-     ┃ ┣ 📂controllers
-     ┃ ┃ ┣ 📜auth.controller.js
-     ┃ ┃ ┣ 📜users.controller.js
-     ┃ ┃ ┣ 📜usersExperiences.controller.js
-     ┃ ┃ ┣ 📜usersPortfolio.controller.js
-     ┃ ┃ ┗ 📜usersSkills.controller.js
-     ┃ ┣ 📂middleware
-     ┃ ┃ ┣ 📜checkDuplicate.js
-     ┃ ┃ ┣ 📜formUpload.js
-     ┃ ┃ ┣ 📜validation-company.js
-     ┃ ┃ ┗ 📜validation-user.js
-     ┃ ┣ 📂model
-     ┃ ┃ ┣ 📜auth.model.js
-     ┃ ┃ ┣ 📜users.model.js
-     ┃ ┃ ┣ 📜usersExperiences.model.js
-     ┃ ┃ ┣ 📜usersPortfolio.model.js
-     ┃ ┃ ┗ 📜usersSkills.model.js
-     ┃ ┗ 📂routes
-     ┃ ┃ ┣ 📜auth.route.js
-     ┃ ┃ ┣ 📜index.js
-     ┃ ┃ ┣ 📜users.route.js
-     ┃ ┃ ┣ 📜usersExperiences.route.js
-     ┃ ┃ ┣ 📜usersPortfolio.route.js
-     ┃ ┃ ┗ 📜usersSkills.route.js
+      ┃ ┣ 📂controller
+      ┃ ┃ ┣ 📜cinema_controller.js
+      ┃ ┃ ┣ 📜controller_auth.js
+      ┃ ┃ ┣ 📜history_controller.js
+      ┃ ┃ ┣ 📜movies_controller.js
+      ┃ ┃ ┣ 📜seatsLeft_controller.js
+      ┃ ┃ ┗ 📜seatsRight_controller.js
+      ┃ ┣ 📂middleware
+      ┃ ┃ ┣ 📜checkDuplicate.js
+      ┃ ┃ ┣ 📜formUpload.js
+      ┃ ┃ ┗ 📜validation.js
+      ┃ ┣ 📂model
+      ┃ ┃ ┣ 📜cinema_model.js
+      ┃ ┃ ┣ 📜history_model.js
+      ┃ ┃ ┣ 📜model_auth.js
+      ┃ ┃ ┣ 📜movies_model.js
+      ┃ ┃ ┣ 📜seatsLeft_model.js
+      ┃ ┃ ┗ 📜seatsRight_model.js
+      ┃ ┗ 📂route
+      ┃ ┃ ┣ 📜route_auth.js
+      ┃ ┃ ┣ 📜route_cinema.js
+      ┃ ┃ ┣ 📜route_history.js
+      ┃ ┃ ┣ 📜route_index.js
+      ┃ ┃ ┣ 📜route_movies.js
+      ┃ ┃ ┣ 📜route_seatsLeft.js
+      ┃ ┃ ┗ 📜route_seatsRight.js
+      ┣ 📜.env
+      ┣ 📜.gitignore
+      ┣ 📜README.md
+      ┣ 📜index.js
+      ┣ 📜package-lock.json
+      ┗ 📜package.json
     
 ## Endpoints
 users endpoint
