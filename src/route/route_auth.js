@@ -11,6 +11,7 @@ router.post("/register", validation.users, authController.register);
 
 router.get("/users", authController.get);
 router.get("/users/:id", authController.getDetail);
+router.get("/users-detail/:id", authController.getDetailWithHistory);
 router.patch("/users/:id", formUploadOnline.single('profile_image'), authController.update);
 router.delete("/users/:id", authController.remove);
 

@@ -54,8 +54,8 @@ const historyModel = {
         return new Promise((resolve, reject) => {
             db.query(
                 // `SELECT 
-                // p.id, p.name, p.email,
-                // json_agg(row_to_json(pi)) history 
+                // p.id, p.name, p.email, p.phone, p.profile_image, p.role,
+                // json_agg(row_to_json(pi)) history
                 // FROM users p
                 // INNER JOIN history pi ON p.id = pi.id_user
                 // AND p.id='${id}'

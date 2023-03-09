@@ -75,6 +75,17 @@ const authController = {
       });
   },
 
+  getDetailWithHistory: (req, res) => {
+    return authModel
+      .getDetailWithHistory(req.params.id)
+      .then((result) => {
+        return res.status(200).send({ message: "success", data: result });
+      })
+      .catch((error) => {
+        return res.status(500).send({ message: error });
+      });
+  },
+
   // update: (req, res) => {
   //   const request = {
   //     ...req.body,
