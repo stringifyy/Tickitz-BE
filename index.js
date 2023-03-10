@@ -18,6 +18,6 @@ app.get("*", (req, res) => {
   });
 });
 
-app.listen(5000, (req, res) => {
+app.listen(process.env.PORT || 5000, (req, res) => {
   console.log("Tickitz Stringifyy Backend Succes Run on Port 5000");
 });

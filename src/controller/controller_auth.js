@@ -40,7 +40,7 @@ const authController = {
           ...req.body,
           password: hash,
         };
-        console.log(request);
+        // console.log(request);
         return authModel
           .register(request)
           .then((result) => {
@@ -67,6 +67,17 @@ const authController = {
   getDetail: (req, res) => {
     return authModel
       .getDetail(req.params.id)
+      .then((result) => {
+        return res.status(200).send({ message: "success", data: result });
+      })
+      .catch((error) => {
+        return res.status(500).send({ message: error });
+      });
+  },
+
+  getDetailWithHistory: (req, res) => {
+    return authModel
+      .getDetailWithHistory(req.params.id)
       .then((result) => {
         return res.status(200).send({ message: "success", data: result });
       })
